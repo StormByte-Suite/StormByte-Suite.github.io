@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="StormByte Suite — focused, cross-platform C++26 libraries and the tooling that keeps them buildable on Linux, Windows and macOS.">
+	<meta property="og:title" content="StormByte Suite">
+	<meta property="og:description" content="Focused C++26 libraries: Base, System, Logger, Config, Buffer, Database, Crypto, Network, Multimedia — plus BuildMaster.">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://suite.stormbyte.org/">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="StormByte Suite">
+	<meta name="twitter:description" content="Focused, cross-platform C++26 libraries and the tooling around them.">
+	<title>StormByte Suite — C++26 libraries</title>
+	<link rel="stylesheet" href="css/fonts.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/content.css">
+	<link rel="icon" type="image/png" href="favicon.png">
+	<script defer src="js/matrix.js"></script>
+	<script defer src="js/ui.js"></script>
+</head>
+<body>
+	<canvas id="matrix" aria-hidden="true"></canvas>
+	<button type="button" id="matrix-toggle" class="matrix-toggle" title="Toggle storm rain" aria-pressed="true">Storm: on</button>
+
+	<nav>
+		<div class="navbar">
+			<a href="#home" class="brand">StormByte<span>::</span>Suite</a>
+			<button type="button" class="toggle-button" aria-label="Open menu" aria-expanded="false">☰</button>
+			<ul class="nav-links">
+				<li><a href="#home">Home</a></li>
+				<li><a href="#map">Map</a></li>
+				<li><a href="#libraries">Libraries</a></li>
+				<li><a href="#tools">Tools</a></li>
+				<li><a href="#design">Design</a></li>
+				<li><a href="#start">Get started</a></li>
+				<li class="dropdown">
+					<a href="#libraries" class="dropbtn">Docs ▾</a>
+					<div class="dropdown-content">
+						<a href="/StormByte/">Base</a>
+						<a href="/StormByte-System/">System</a>
+						<a href="/StormByte-Logger/">Logger</a>
+						<a href="/StormByte-Config/">Config</a>
+						<a href="/StormByte-Buffer/">Buffer</a>
+						<a href="/StormByte-Database/">Database</a>
+						<a href="/StormByte-Crypto/">Crypto</a>
+						<a href="/StormByte-Network/">Network</a>
+						<a href="/StormByte-Multimedia/">Multimedia</a>
+						<a href="/StormByte-BuildMaster/">BuildMaster</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<main class="container">
+		<section id="home" class="hero" aria-label="StormByte Suite">
+			<p class="hero-kicker">$ cmake --build storm</p>
+			<h1 class="hero-title typewriter">StormByte Suite</h1>
+			<p class="tagline">Focused C++26 libraries and the tools that keep them buildable on Linux, Windows and macOS.</p>
+			<p class="tech hero-chips">
+				<span class="chip">C++26</span>
+				<span class="chip">CMake 3.28+</span>
+				<span class="chip">Linux · Windows · macOS</span>
+				<span class="chip">LGPL v3+ / Commercial</span>
+			</p>
+			<p class="hero-actions">
+				<a class="btn" href="#libraries">Explore modules</a>
+				<a class="btn btn-ghost" href="https://github.com/StormByte-Suite" target="_blank" rel="noopener">GitHub organization</a>
+			</p>
+		</section>
+
+		<section id="about" class="hover-effect">
+			<h2>What it is</h2>
+			<div class="description">
+				<p>
+					The public surface is intentionally small. <strong>Each module does one job.</strong>
+					Third-party types stay private, and text or binary data that crosses a DLL / <code>.so</code>
+					boundary travels as suite types, never as a <code>std::string</code> by value.
+				</p>
+				<p>
+					The suite is <strong>split on purpose</strong>: link only what you use. Base does not implement
+					Buffer, Crypto or Network — every module lives in its own repository with its own releases,
+					documentation and pinned dependencies.
+				</p>
+			</div>
+		</section>
+
+		<section id="map" class="hover-effect">
+			<h2>Suite map</h2>
+			<p class="section-lead">Every library builds on the layer below it. Click a node to jump to its module.</p>
+			<div class="layers" role="list">
+				<div class="layer" role="listitem">
+					<span class="layer-label">L3 · domains</span>
+					<div class="layer-nodes">
+						<a class="node" href="#mod-crypto">Crypto</a>
+						<a class="node" href="#mod-network">Network</a>
+						<a class="node" href="#mod-multimedia">Multimedia</a>
+					</div>
+				</div>
+				<div class="layer" role="listitem">
+					<span class="layer-label">L2 · data flow</span>
+					<div class="layer-nodes">
+						<a class="node" href="#mod-buffer">Buffer</a>
+						<a class="node" href="#mod-database">Database</a>
+					</div>
+				</div>
+				<div class="layer" role="listitem">
+					<span class="layer-label">L1 · services</span>
+					<div class="layer-nodes">
+						<a class="node" href="#mod-system">System</a>
+						<a class="node" href="#mod-logger">Logger</a>
+						<a class="node" href="#mod-config">Config</a>
+					</div>
+				</div>
+				<div class="layer layer-core" role="listitem">
+					<span class="layer-label">L0 · foundation</span>
+					<div class="layer-nodes">
+						<a class="node node-core" href="#mod-base">Base</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="libraries" class="hover-effect">
+			<h2>Libraries</h2>
+			<div class="grid">
+				<article class="project" id="mod-base">
+					<h3>StormByte <span class="mod-tag">Base</span></h3>
+					<p>The foundation every other module links: platform and visibility macros, exceptions, <code>Expected</code>, <code>Error</code>/<code>Fault</code>, little-endian serialization, DLL-safe text and <code>BinaryData</code>, <code>Size</code>/<code>ByteSize</code>, UUID v4, bitmasks, safe pointers, clonable types, <code>ThreadLock</code> and type concepts.</p>
+					<p class="deps">Depends on: <em>nothing</em></p>
+					<p class="tech"><span class="chip">Expected</span><span class="chip">Serialization</span><span class="chip">Safe text</span></p>
+					<p class="project-links">
+						<a href="/StormByte/">Documentation</a> ·
+						<a href="https://github.com/StormByte-Suite/StormByte" target="_blank" rel="noopener">GitHub</a>
+					</p>
+				</article>
+
+				<article class="project" id="mod-system">
+					<h3>StormByte-System</h3>
+					<p>Spawn processes with piped stdin/stdout/stderr and chain them shell-style (<code>p1 &gt;&gt; p2</code>). Classify the device behind a path, resolve process directories, inspect the host, name threads and expand environment strings. POSIX and Windows, one API.</p>
+					<p class="deps">Depends on: <a href="#mod-base">Base</a></p>
+					<p class="tech"><span class="chip">Process</span><span class="chip">Pipes</span><span class="chip">Host</span></p>
+					<p class="project-links">
+						<a href="/StormByte-System/">Documentation</a> ·
+						<a href="https://github.com/StormByte-Suite/StormByte-System" target="_blank" rel="noopener">GitHub</a>
+					</p>
+				</article>
+
+				<article class="project" id="mod-logger">
+					<h3>StormByte-Logger</h3>
+					<p>Streaming logger with ordered levels, configurable headers, hierarchical components and sticky <code>Scope</code> facades. ANSI colors, human-readable sizes, redaction, hex dumps and a <code>ThreadedLog</code> that takes one lock per logical line.</p>
+					<p class="deps">Depends on: <a href="#mod-base">Base</a></p>
+					<p class="tech"><span class="chip">Levels</span><span class="chip">Redaction</span><span class="chip">ThreadedLog</span></p>
+					<p class="project-links">
+						<a href="/StormByte-Logger/">Documentation</a> ·
+						<a href="https://github.com/StormByte-Suite/StormByte-Logger" target="_blank" rel="noopener">GitHub</a>
+					</p>
+				</article>
+
+				<article class="project" id="mod-config">
+					<h3>StormByte-Config</h3>
+					<p>Human-readable text and versioned binary configuration documents: values, comments, groups and lists. <code>Save</code>/<code>Load</code> on any stream, read hooks, collision policies and forward-safe binary layouts.</p>
+					<p class="deps">Depends on: <a href="#mod-base">Base</a></p>
+					<p class="tech"><span class="chip">Text</span><span class="chip">Binary</span><span class="chip">Hooks</span></p>
+					<p class="project-links">
+						<a href="/StormByte-Config/">Documentation</a> ·
+						<a href="https://github.com/StormByte-Suite/StormByte-Config" target="_blank" rel="noopener">GitHub</a>
+					</p>
+				</article>
+
+				<article class="project" id="mod-buffer">
+					<h3>StormByte-Buffer</h3>
+					<p>FIFO, thread-safe SharedFIFO, concurrent Ring, Producer/Consumer handles, typed Hopper/Sink, plus <code>Pipeline</code>, <code>Bridge</code> and <code>Pumper</code> to wire them together. Buffered file I/O with cache, prefetch and backpressure.</p>
+					<p class="deps">Depends on: <a href="#mod-system">System</a>, <a href="#mod-logger">Logger</a></p>
+					<p class="tech"><span class="chip">Ring</span><span class="chip">Pipelines</span><span class="chip">Buffered I/O</span></p>
+					<p class="project-links">
+						<a href="/StormByte-Buffer/">Documentation</a> ·
+						<a href="https://github.com/StormByte-Suite/StormByte-Buffer" target="_blank" rel="noopener">GitHub</a>
+					</p>
+				</article>
+
+				<article class="project" id="mod-database">
+					<h3>StormByte-Database</h3>
+					<p>One API over SQLite, PostgreSQL and MariaDB. Backends are base classes: inherit one and build your schema on top. Prepared statements, type-erased values, RAII transactions returned as <code>Expected</code>, TLS and telemetry.</p>
+					<p class="deps">Depends on: <a href="#mod-logger">Logger</a></p>
+					<p class="tech"><span class="chip">SQLite</span><span class="chip">PostgreSQL</span><span class="chip">MariaDB</span></p>
+					<p class="project-links">
+						<a href="/StormByte-Database/">Documentation</a> ·
+						<a href="https://github.com/StormByte-Suite/StormByte-Database" target="_blank" rel="noopener">GitHub</a>
+					</p>
+				</article>
+
+				<article class="project" id="mod-crypto">
+					<h3>StormByte-Crypto</h3>
+					<p>Hash, compress, encrypt, sign and key agreement: SHA-2/SHA-3/BLAKE2, Zlib/Gzip/BZip2, AES-GCM, ChaCha20-Poly1305, RSA/ECIES, Ed25519, X25519 and more. Wiped secret buffers, PEM/DER key pairs and streaming via Buffer. Crypto++ stays private.</p>
+					<p class="deps">Depends on: <a href="#mod-base">Base</a>, <a href="#mod-buffer">Buffer</a>, <a href="#mod-system">System</a></p>
+					<p class="tech"><span class="chip">AEAD</span><span class="chip">Signatures</span><span class="chip">ECDH</span></p>
+					<p class="project-links">
+						<a href="/StormByte-Crypto/">Documentation</a> ·
+						<a href="https://github.com/StormByte-Suite/StormByte-Crypto" target="_blank" rel="noopener">GitHub</a>
+					</p>
+				</article>
+
+				<article class="project" id="mod-network">
+					<h3>StormByte-Network</h3>
+					<p>Inherit <code>Client</code> or <code>Server</code>, define framed packets and attach Buffer pipelines to compress or encrypt payloads. IPv4/IPv6, request/response and fire-and-forget, bounded workers and backpressure. POSIX and Winsock stay private.</p>
+					<p class="deps">Depends on: <a href="#mod-base">Base</a>, <a href="#mod-buffer">Buffer</a>, <a href="#mod-logger">Logger</a>, <a href="#mod-system">System</a></p>
+					<p class="tech"><span class="chip">TCP</span><span class="chip">Packets</span><span class="chip">IPv6</span></p>
+					<p class="project-links">
+						<a href="/StormByte-Network/">Documentation</a> ·
+						<a href="https://github.com/StormByte-Suite/StormByte-Network" target="_blank" rel="noopener">GitHub</a>
+					</p>
+				</article>
+
+				<article class="project" id="mod-multimedia">
+					<h3>StormByte-Multimedia</h3>
+					<p>A C++26 pipeline for demuxing, decoding, filtering, encoding and muxing on top of FFmpeg — without raw <code>AVFrame</code>/<code>AVPacket</code> in public headers. Use the <code>Transcoder</code> facade or wire the tube by hand; codecs are enabled only if present.</p>
+					<p class="deps">Depends on: <a href="#mod-base">Base</a>, <a href="#mod-buffer">Buffer</a>, <a href="#mod-logger">Logger</a></p>
+					<p class="tech"><span class="chip">FFmpeg</span><span class="chip">Transcoder</span><span class="chip">Filters</span></p>
+					<p class="project-links">
+						<a href="/StormByte-Multimedia/">Documentation</a> ·
+						<a href="https://github.com/StormByte-Suite/StormByte-Multimedia" target="_blank" rel="noopener">GitHub</a>
+					</p>
+				</article>
+			</div>
+		</section>
+
+		<section id="tools" class="hover-effect">
+			<h2>Tools</h2>
+			<article class="project project-wide" id="mod-buildmaster">
+				<h3>StormByte BuildMaster</h3>
+				<p>A short, declarative CMake DSL for vendoring CMake and Meson projects without the usual third-party spaghetti. Declare components and edges in any order; BuildMaster materializes stages, <code>IMPORTED</code> targets and one shared install prefix at the end of configure — static archives, plugin packs, whole-archive linking and per-component toolchains included.</p>
+				<pre class="code"><code>buildmaster_component(mylib "My Library"
+	"${CMAKE_SOURCE_DIR}/thirdparty/mylib/src"
+	"ENABLE_FOO=ON;WITH_TESTS=OFF" shared mylib "ALIAS=My::Lib")
+buildmaster_component(mytool "My Tool"
+	"${CMAKE_SOURCE_DIR}/thirdparty/mytool/src" "" executable mytool)
+buildmaster_link(mytool mylib)
+
+target_link_libraries(MyApp PRIVATE My::Lib)</code></pre>
+				<p class="tech"><span class="chip">CMake</span><span class="chip">Meson</span><span class="chip">MIT</span></p>
+				<p class="project-links">
+					<a href="/StormByte-BuildMaster/">Documentation</a> ·
+					<a href="https://github.com/StormByte-Suite/StormByte-BuildMaster" target="_blank" rel="noopener">GitHub</a>
+				</p>
+			</article>
+		</section>
+
+		<section id="design" class="hover-effect">
+			<h2>Design principles</h2>
+			<ul class="bullets">
+				<li><strong>Split on purpose.</strong> Link only what you use; every module has its own repository and releases.</li>
+				<li><strong>Inherit, do not wrap.</strong> Vendor types (Crypto++, FFmpeg, sockets, SQL clients) never appear in public headers.</li>
+				<li><strong>Typed failures.</strong> <code>Expected</code> and <code>Fault</code> with stable domains such as <code>StormByte.Crypto</code>.</li>
+				<li><strong>DLL-safe boundaries.</strong> Text and bytes cross shared-library boundaries as suite types.</li>
+				<li><strong>Cross-platform.</strong> Linux, Windows and macOS with GCC, Clang and clang-cl.</li>
+				<li><strong>Dual licensed.</strong> LGPL v3 or later, or a commercial license from the copyright holder. BuildMaster is MIT.</li>
+			</ul>
+		</section>
+
+		<section id="start" class="hover-effect">
+			<h2>Get started</h2>
+			<p class="section-lead">Needs a C++26 compiler and CMake 3.28 or newer. Each module's README lists its exact dependencies and pins.</p>
+			<pre class="code"><code>git clone https://github.com/StormByte-Suite/StormByte.git
+cd StormByte
+cmake -S . -B build
+cmake --build build</code></pre>
+			<p class="section-lead">Headers live under <code>StormByte/…</code>; the namespace root is <code>StormByte</code>. Shared vs static follows <code>BUILD_SHARED_LIBS</code>. Issues and pull requests go to the module they belong to.</p>
+		</section>
+	</main>
+
+	<footer>
+		<p>© <span id="year"></span> David Carlos Manuelda · StormByte Suite</p>
+		<p>
+			<a href="https://github.com/StormByte-Suite" target="_blank" rel="noopener">GitHub</a> |
+			<a href="https://dev.stormbyte.org/" target="_blank" rel="noopener">Author</a> |
+			<a href="https://github.com/sponsors/StormBytePP" target="_blank" rel="noopener">Sponsor</a>
+		</p>
+		<p class="sys-status" id="sys-status" aria-live="off">storm idle · 0 strikes</p>
+	</footer>
+</body>
+</html>
